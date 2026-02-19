@@ -1,101 +1,240 @@
 /*
   styles.css
-  Inclass 06 - Playing Cards
-  Focus: absolute positioning, z-index layering, gradients, shadows
+  CW06 - Playing Cards
+  Goal: match the expected screenshot look (centered, rotated, softer shadows)
 */
 
-/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Page layout */
 body {
   font-family: Arial, Helvetica, sans-serif;
   background: #f4f4f4;
   display: flex;
   justify-content: center;
-  padding-top: 40px;
+  padding: 40px 16px;
 }
 
 .wrapper {
   text-align: center;
 }
 
-/* 1) Table Background */
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.hint {
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+/* Table */
 .table {
   position: relative;
-  /* important for absolute children */
-  width: 500px;
-  height: 320px;
-  margin-top: 30px;
+  width: 860px;
+  height: 340px;
+  margin: 22px auto 0;
 
-  background: linear-gradient(to bottom, forestgreen, darkgreen);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  /* a lighter felt-y gradient like the expected image */
+  background: linear-gradient(to right, #0d6b3a, #2b8f63);
+  border-radius: 14px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
 }
 
-/* 2) Card Styling */
+/* Caption pill */
+.table-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  background: rgba(58, 92, 130, 0.7);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* Hide checkboxes (still clickable through the label) */
+.flip-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Card label wrapper */
 .card {
-  position: relative;
-  /* anchor corner symbols */
-  width: 130px;
-  height: 190px;
-  background: white;
-  border-radius: 5px;
-  box-shadow: 3px 3px 0px black;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 60px;
-}
-
-/* 3) Top Card Position */
-.card-top {
+  width: 150px;
+  height: 210px;
   position: absolute;
-  left: 150px;
-  top: 100px;
-  z-index: 2;
-  /* higher layer */
+  cursor: pointer;
+  user-select: none;
+
+  /* smoother transforms */
+  transition: transform 300ms ease;
 }
 
-/* 4) Bottom Card Position */
+/*
+  Center placement like expected screenshot
+  (we set a base center then offset each card slightly)
+*/
+.card-top,
 .card-bottom {
-  position: absolute;
-  left: 240px;
-  top: 120px;
-  z-index: 1;
-  /* lower layer */
+  left: 50%;
+  top: 50%;
 }
 
-/* 6) Corner Symbol Positioning */
-.top-left {
+/* Left card */
+.card-top {
+  z-index: 2;
+  transform: translate(-190px, -120px) rotate(-12deg);
+}
+
+/* Right card */
+.card-bottom {
+  z-index: 1;
+  transform: translate(40px, -110px) rotate(10deg);
+}
+
+/* 3D flip setup */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-style: preserve-3d;
+  transition: transform 450ms ease;
+}
+
+/* Start face down like you asked */
+.card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  font-size: 20px;
+  inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  background: white;
+
+  /*
+    Shadow upgrade: soft, natural shadow
+    (still keeps a crisp edge shadow feel)
+  */
+  box-shadow:
+    0 20px 35px rgba(0, 0, 0, 0.25),
+    0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Front face */
+.card-front {
+  background: #ffffff;
+}
+
+/* Back face */
+.card-back {
+  transform: rotateY(180deg);
+  background: #e5eef7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Heart card back design like the expected (dark card with A ♥) */
+.card-back-heart {
+  transform: rotateY(180deg);
+  background: #213245;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.back-a,
+.back-suit {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 1px;
+}
+
+/* Pattern back for the spade card */
+.back-pattern {
+  width: 86%;
+  height: 86%;
+  border-radius: 10px;
+  background:
+    linear-gradient(45deg, rgba(0, 0, 0, 0.10) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0, 0, 0, 0.10) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.10) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.10) 75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+  outline: 2px solid rgba(0, 0, 0, 0.12);
+}
+
+/* Corner symbols */
+.corner {
+  position: absolute;
+  font-size: 18px;
+}
+
+.top-left {
+  left: 10px;
+  top: 10px;
 }
 
 .bottom-right {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  font-size: 20px;
+  right: 10px;
+  bottom: 10px;
 }
 
 .center {
-  font-size: 70px;
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
 }
 
-/* Color Styling */
 .heart {
   color: crimson;
 }
 
 .spade {
-  color: black;
+  color: #0f1b2a;
+}
+
+/* Blue square behind spade like the expected */
+.pip-box {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  background: #a8c7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover fan: separate the cards more */
+.table:hover .card-top {
+  transform: translate(-240px, -135px) rotate(-18deg);
+}
+
+.table:hover .card-bottom {
+  transform: translate(120px, -95px) rotate(18deg);
+}
+
+/* Click flip (checked = face up) */
+#flip-heart:checked+.card-top .card-inner {
+  transform: rotateY(0deg);
+}
+
+#flip-spade:checked+.card-bottom .card-inner {
+  transform: rotateY(0deg);
 }

@@ -1,43 +1,66 @@
 <!DOCTYPE html>
 <!--
   index.html
-  Inclass 06 - Playing Cards
-  Shows two overlapping playing cards positioned with CSS.
+  CW06 - Playing Cards
+  Hover: fan cards
+  Click: flip card (CSS-only)
 -->
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inclass 06 - Playing Cards</title>
+  <title>CW06 - Playing Cards</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
   <main class="wrapper">
-
     <h1>Inclass 06: Playing Cards</h1>
-    <p>CSS Positioning, Layering & Styling</p>
+    <p class="hint">Hover to fan • Click a card to flip</p>
 
-    <!-- Card Table Container -->
-    <div class="table">
+    <div class="table" aria-label="Card table">
+      <!-- Left card (back design with A♥) -->
+      <input class="flip-toggle" type="checkbox" id="flip-heart">
+      <label class="card card-top" for="flip-heart" aria-label="Heart card">
+        <span class="card-inner">
+          <span class="card-face card-front">
+            <span class="corner top-left heart">♥</span>
+            <span class="center heart">♥</span>
+            <span class="corner bottom-right heart">♥</span>
+          </span>
 
-      <!-- Top Card (Heart - Red) -->
-      <div class="card card-top">
-        <span class="top-left heart">♥</span>
-        <span class="center heart">♥</span>
-        <span class="bottom-right heart">♥</span>
-      </div>
+          <span class="card-face card-back card-back-heart">
+            <span class="back-a">A</span>
+            <span class="back-suit">♥</span>
+          </span>
+        </span>
+      </label>
 
-      <!-- Bottom Card (Spade - Black) -->
-      <div class="card card-bottom">
-        <span class="top-left spade">♠</span>
-        <span class="center spade">♠</span>
-        <span class="bottom-right spade">♠</span>
-      </div>
+      <!-- Right card (spade front with blue square) -->
+      <input class="flip-toggle" type="checkbox" id="flip-spade">
+      <label class="card card-bottom" for="flip-spade" aria-label="Spade card">
+        <span class="card-inner">
+          <span class="card-face card-front">
+            <span class="corner top-left spade">♠</span>
 
+            <span class="center">
+              <span class="pip-box">
+                <span class="spade">♠</span>
+              </span>
+            </span>
+
+            <span class="corner bottom-right spade">♠</span>
+          </span>
+
+          <span class="card-face card-back">
+            <span class="back-pattern"></span>
+          </span>
+        </span>
+      </label>
+
+      <div class="table-caption">Hover to fan • Click a card to flip</div>
     </div>
-
   </main>
 </body>
 
