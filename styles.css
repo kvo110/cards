@@ -91,13 +91,13 @@ h1 {
 /* Left card */
 .card-top {
   z-index: 2;
-  transform: translate(-190px, -120px) rotate(-12deg);
+  transform: translate(-140px, -115px) rotate(-10deg);
 }
 
 /* Right card */
 .card-bottom {
   z-index: 1;
-  transform: translate(40px, -110px) rotate(10deg);
+  transform: translate(0px, -110px) rotate(8deg);
 }
 
 /* 3D flip setup */
@@ -157,6 +157,24 @@ h1 {
 
 .back-a,
 .back-suit {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 1px;
+}
+
+/* Spade card back to match heart card back */
+.card-back-spade {
+  transform: rotateY(180deg);
+  background: #213245;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.card-back-spade .back-a,
+.card-back-spade .back-suit {
   color: #ffffff;
   font-weight: 700;
   font-size: 30px;
