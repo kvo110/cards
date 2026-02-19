@@ -20,16 +20,15 @@
     <p class="hint">Hover to fan • Click a card to flip</p>
 
     <div class="table" aria-label="Card table">
-      <!-- Left card (back design with A♥) -->
       <input class="flip-toggle" type="checkbox" id="flip-heart">
       <label class="card card-top" for="flip-heart" aria-label="Heart card">
         <span class="card-inner">
-          <span class="card-face card-front">
-            <span class="corner top-left heart">♥</span>
-            <span class="center heart">♥</span>
-            <span class="corner bottom-right heart">♥</span>
+          <!-- Side 1: suit-only -->
+          <span class="card-face card-front card-front-suit">
+            <span class="suit-only heart">♥</span>
           </span>
 
+          <!-- Side 2: navy A + suit -->
           <span class="card-face card-back card-back-heart">
             <span class="back-a">A</span>
             <span class="back-suit">♥</span>
@@ -37,22 +36,15 @@
         </span>
       </label>
 
-      <!-- Right card (spade front with blue square) -->
       <input class="flip-toggle" type="checkbox" id="flip-spade">
       <label class="card card-bottom" for="flip-spade" aria-label="Spade card">
         <span class="card-inner">
-          <span class="card-face card-front">
-            <span class="corner top-left spade">♠</span>
-
-            <span class="center">
-              <span class="pip-box">
-                <span class="spade">♠</span>
-              </span>
-            </span>
-
-            <span class="corner bottom-right spade">♠</span>
+          <!-- Side 1: suit-only -->
+          <span class="card-face card-front card-front-suit">
+            <span class="suit-only spade">♠</span>
           </span>
 
+          <!-- Side 2: navy A + suit -->
           <span class="card-face card-back card-back-spade">
             <span class="back-a">A</span>
             <span class="back-suit">♠</span>

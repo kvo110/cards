@@ -1,7 +1,10 @@
 /*
   styles.css
   CW06 - Playing Cards
-  Goal: match the expected screenshot look (centered, rotated, softer shadows)
+  Two-sided cards:
+  - Side 1: suit-only
+  - Side 2: navy A + suit
+  Extra: subtle floating animation
 */
 
 * {
@@ -38,12 +41,11 @@ h1 {
   width: 860px;
   height: 340px;
   margin: 22px auto 0;
-
-  /* a lighter felt-y gradient like the expected image */
   background: linear-gradient(to right, #0d6b3a, #2b8f63);
   border-radius: 14px;
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.22);
   overflow: hidden;
+  perspective: 900px;
 }
 
 /* Caption pill */
@@ -59,14 +61,29 @@ h1 {
   font-size: 13px;
 }
 
-/* Hide checkboxes (still clickable through the label) */
+/* Hide checkboxes */
 .flip-toggle {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* Card label wrapper */
+/* Floating animation (subtle) */
+@keyframes floaty {
+  0% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  }
+
+  50% {
+    transform: translate(var(--tx), calc(var(--ty) - 10px)) rotate(calc(var(--rot) + 1deg));
+  }
+
+  100% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  }
+}
+
+/* Card wrapper */
 .card {
   width: 150px;
   height: 210px;
@@ -74,33 +91,45 @@ h1 {
   cursor: pointer;
   user-select: none;
 
-  /* smoother transforms */
   transition: transform 300ms ease;
+
+  /* base placement via vars so animation can reuse it */
+  --tx: 0px;
+  --ty: 0px;
+  --rot: 0deg;
+
+  animation: floaty 4.8s ease-in-out infinite;
 }
 
-/*
-  Center placement like expected screenshot
-  (we set a base center then offset each card slightly)
-*/
+/* Center placement base */
 .card-top,
 .card-bottom {
   left: 50%;
   top: 50%;
 }
 
-/* Left card */
+/* Left card base placement */
 .card-top {
   z-index: 2;
-  transform: translate(-140px, -115px) rotate(-10deg);
+  --tx: -140px;
+  --ty: -115px;
+  --rot: -10deg;
+
+  /* starts a little later so it doesn’t sync perfectly */
+  animation-delay: -1.2s;
 }
 
-/* Right card */
+/* Right card base placement */
 .card-bottom {
   z-index: 1;
-  transform: translate(0px, -110px) rotate(8deg);
+  --tx: 0px;
+  --ty: -110px;
+  --rot: 8deg;
+
+  animation-delay: -2.6s;
 }
 
-/* 3D flip setup */
+/* Flip setup */
 .card-inner {
   position: relative;
   width: 100%;
@@ -108,11 +137,9 @@ h1 {
   display: block;
   transform-style: preserve-3d;
   transition: transform 450ms ease;
-}
 
-/* Start face down like you asked */
-.card-inner {
-  transform: rotateY(180deg);
+  /* start showing suit-only side (front) */
+  transform: rotateY(0deg);
 }
 
 .card-face {
@@ -120,38 +147,38 @@ h1 {
   inset: 0;
   border-radius: 10px;
   backface-visibility: hidden;
-  background: white;
 
-  /*
-    Shadow upgrade: soft, natural shadow
-    (still keeps a crisp edge shadow feel)
-  */
   box-shadow:
     0 20px 35px rgba(0, 0, 0, 0.25),
     0 2px 0 rgba(0, 0, 0, 0.25);
 }
 
-/* Front face */
-.card-front {
+/* Side 1: suit-only */
+.card-front-suit {
   background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateY(0deg);
 }
 
-/* Back face */
+.suit-only {
+  font-size: 86px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Side 2: navy A + suit */
 .card-back {
   transform: rotateY(180deg);
-  background: #e5eef7;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Heart card back design like the expected (dark card with A ♥) */
-.card-back-heart {
-  transform: rotateY(180deg);
+.card-back-heart,
+.card-back-spade {
   background: #213245;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 8px;
 }
 
@@ -163,63 +190,6 @@ h1 {
   letter-spacing: 1px;
 }
 
-/* Spade card back to match heart card back */
-.card-back-spade {
-  transform: rotateY(180deg);
-  background: #213245;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.card-back-spade .back-a,
-.card-back-spade .back-suit {
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 30px;
-  letter-spacing: 1px;
-}
-
-/* Pattern back for the spade card */
-.back-pattern {
-  width: 86%;
-  height: 86%;
-  border-radius: 10px;
-  background:
-    linear-gradient(45deg, rgba(0, 0, 0, 0.10) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(0, 0, 0, 0.10) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.10) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.10) 75%);
-  background-size: 18px 18px;
-  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
-  outline: 2px solid rgba(0, 0, 0, 0.12);
-}
-
-/* Corner symbols */
-.corner {
-  position: absolute;
-  font-size: 18px;
-}
-
-.top-left {
-  left: 10px;
-  top: 10px;
-}
-
-.bottom-right {
-  right: 10px;
-  bottom: 10px;
-}
-
-.center {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translate(-50%, -50%);
-  font-size: 60px;
-}
-
 .heart {
   color: crimson;
 }
@@ -228,31 +198,24 @@ h1 {
   color: #0f1b2a;
 }
 
-/* Blue square behind spade like the expected */
-.pip-box {
-  width: 64px;
-  height: 64px;
-  border-radius: 6px;
-  background: #a8c7ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Hover fan: separate the cards more */
+/* Hover fan (more spread) */
 .table:hover .card-top {
-  transform: translate(-240px, -135px) rotate(-18deg);
+  --tx: -240px;
+  --ty: -135px;
+  --rot: -18deg;
 }
 
 .table:hover .card-bottom {
-  transform: translate(120px, -95px) rotate(18deg);
+  --tx: 120px;
+  --ty: -95px;
+  --rot: 18deg;
 }
 
-/* Click flip (checked = face up) */
+/* Click flip to show navy A side */
 #flip-heart:checked+.card-top .card-inner {
-  transform: rotateY(0deg);
+  transform: rotateY(180deg);
 }
 
 #flip-spade:checked+.card-bottom .card-inner {
-  transform: rotateY(0deg);
+  transform: rotateY(180deg);
 }
