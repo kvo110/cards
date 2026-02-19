@@ -68,18 +68,20 @@ h1 {
   pointer-events: none;
 }
 
-/* Floating animation (subtle) */
+/* Floating animation (subtle)
+  Fix: animate translate (not transform) so hover spread stays smooth
+*/
 @keyframes floaty {
   0% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+    translate: 0 0;
   }
 
   50% {
-    transform: translate(var(--tx), calc(var(--ty) - 10px)) rotate(calc(var(--rot) + 1deg));
+    translate: 0 -8px;
   }
 
   100% {
-    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+    translate: 0 0;
   }
 }
 
@@ -93,11 +95,15 @@ h1 {
 
   transition: transform 300ms ease;
 
-  /* base placement via vars so animation can reuse it */
+  /* base placement via vars */
   --tx: 0px;
   --ty: 0px;
   --rot: 0deg;
 
+  /* this is what makes the hover spread smooth */
+  transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+
+  /* float that doesn't fight the transform above */
   animation: floaty 4.8s ease-in-out infinite;
 }
 
@@ -115,7 +121,6 @@ h1 {
   --ty: -115px;
   --rot: -10deg;
 
-  /* starts a little later so it doesn’t sync perfectly */
   animation-delay: -1.2s;
 }
 
